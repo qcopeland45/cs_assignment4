@@ -226,8 +226,8 @@ int FindNeighborRef(int ref)
 bool isColiner(const Quadrilateral& q)
 {
     int flag = 0;
-    for (int i = 0; i < q.slopes.size(); i++) {
-        if (q.slopes[i] == q.slopes[i + 1] && q.slopes[i] != 0) {
+    for (int i = 0; i < q.slopes.size() -1; i++) {
+        if ((q.slopes[i] == q.slopes[i + 1]) && (q.slopes[i] != 0)) {
             flag++;
         }
     }
