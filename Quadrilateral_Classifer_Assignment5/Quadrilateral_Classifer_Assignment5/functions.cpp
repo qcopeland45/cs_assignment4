@@ -60,6 +60,12 @@ std::vector<double> ParseString(std::string& line)
         exit(-2);
     }
     
+    if (isIntersecting(points)) {
+        std::cout << "Error 3: Line segments cannot cross\n";
+        exit(-2);
+    }
+    
+    
     return points;
 }
 
@@ -90,6 +96,8 @@ bool isCoincidePoint(const std::vector<double>& points)
     }
     return false;
 }
+
+
 
 
 void SortCordinants(std::vector<double>& data, Quadrilateral& q)
@@ -143,15 +151,15 @@ bool IsRectangle(const Quadrilateral& q)
 bool IsSquare(const Quadrilateral& q)
 {
     for (int i = 0; i < q.lengths.size(); i++) {
-//        if (q.lengths[0] != q.lengths[i] || q.slopes[i] != 0) { // checking lengths of each side
-//            //std::cout << "Not a Square " << std::endl;
-//            return false;
-//
-//        }
-//
-        int j = FindNeighborRef(i);
-        if (q.lengths[i] != q.lengths[j] || (q.slopes[i] != 0 && q.slopes[i] != 1000) || (q.slopes[j] != 0 && q.slopes[j] != 1000))
+        if (q.lengths[0] != q.lengths[i] || q.slopes[i] != 0) { // checking lengths of each side
+            //std::cout << "Not a Square " << std::endl;
             return false;
+
+        }
+//
+//        int j = FindNeighborRef(i);
+//        if (q.lengths[i] != q.lengths[j] || (q.slopes[i] != 0 && q.slopes[i] != 1000) || (q.slopes[j] != 0 && q.slopes[j] != 1000))
+//            return false;
     }
     //std::cout << "Is a square " << std::endl;
     return true;
@@ -264,10 +272,57 @@ void CalculateSlope(Quadrilateral& q)
 }
 
 
-void displayPoint(std::pdd P)
+bool isIntersecting(const std::vector<double>& points)
 {
-    std::cout << "(" << P.first << ", " << P.second << ")" << std::endl;
+    
+    //CREATING POINT PAIRS
+    std::pdd A = std::make_pair(0,0);
+    std::pdd B = std::make_pair(points[0], points[1]);
+    std::pdd C = std::make_pair(points[2], points[3]);
+    std::pdd D = std::make_pair(points[4], points[5]);
+    
+    
+    //calling function to detect intersecting lines
+    std::pdd intersection = lineLineIntersection(A, B, C, D); //checking opposite lines
+    std::pdd intersection2 = lineLineIntersection(A, D, C, B);
+    
+    int xMax = points[0];
+    int yMax = points[1];
+    
+    for (int i=2; i < points.size(); i+= 2) {
+        if (points[i] > xMax) {
+            xMax = points[i];
+        }
+    }
+    
+    for(int i=3; i<points.size(); i+= 2) {
+        if(points[i]>yMax){
+            yMax=points[i];
+        }
+    }
+    
+    if (intersection.first < xMax && intersection.second < yMax && intersection.first > 0 && intersection.second > 0) {
+        
+        //if intersection y > AB max y
+        if (intersection.second > points[3]) {
+            return false;
+        }
+        
+        return true;
+    }
+    if (intersection2.first < xMax && intersection2.second < yMax && intersection2.second > 0 && intersection2.second > 0) {
+        return true;
+    }
+    
+    
+    return false;
 }
+
+
+//void displayPoint(std::pdd P)
+//{
+//    std::cout << "(" << P.first << ", " << P.second << ")" << std::endl;
+//}
 
 
 std::pdd lineLineIntersection(std::pdd A, std::pdd B, std::pdd C, std::pdd D)
@@ -289,17 +344,12 @@ std::pdd lineLineIntersection(std::pdd A, std::pdd B, std::pdd C, std::pdd D)
         // The lines are parallel. This is simplified
         // by returning a pair of FLT_MAX
         return std::make_pair(__FLT_MAX__, __FLT_MAX__);
-//        return std::make_pair(-99, -99);
-//        return false; //not intersecting line
         
     }
     else {
         double x = (b2*c1 - b1*c2)/determinant;
         double y = (a1*c2 - a2*c1)/determinant;
-        x = -99;
-        y = -99;
         return std::make_pair(x, y);
-//        return true; //are intersecting lines
     }
 }
 
@@ -307,37 +357,6 @@ std::pdd lineLineIntersection(std::pdd A, std::pdd B, std::pdd C, std::pdd D)
 //worked with Jordan H on this
 void printCorrectShape(const Quadrilateral& q)
 {
-
-//    std::pdd A = std::make_pair(0, 0); //the implied 0 0
-//    std::pdd B = std::make_pair(q.xCord[3], q.yCord[3]);
-//    std::pdd C = std::make_pair(q.xCord[2], q.yCord[2]);
-//    std::pdd D = std::make_pair(q.xCord[1], q.yCord[1]);
-//
-//    //    pdd A = make_pair(q.xCord[0], q.yCord[0]);
-//    //    pdd B = make_pair(q.xCord[1], q.yCord[1]);
-//    //    pdd C = make_pair(q.xCord[2], q.yCord[2]);
-//    //    pdd D = make_pair(q.xCord[3], q.yCord[3]);
-//
-//
-//    std::pdd intersection = lineLineIntersection(A, B, C, D);
-//
-//    if (intersection.first == __FLT_MAX__ && intersection.second==__FLT_MAX__) {
-//        std::cout << "The given lines AB and CD are parallel.\n";
-//    }
-//
-//    else {
-//        // NOTE: Further check can be applied in case
-//        // of line segments. Here, we have considered AB
-//        // and CD as lines
-//        std::cout << "ERror 3 These lines intersect at: ";
-//        displayPoint(intersection);
-//        exit(-1);
-//
-//    }
-    
-    
-    
-    
     
     if (IsKite(q) && IsParallelogram(q)) {
         //need to check if it is a square

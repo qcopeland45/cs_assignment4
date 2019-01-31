@@ -69,12 +69,12 @@ bool isCoincidePoint(const std::vector<double>& points);
 
 bool isColiner(const Quadrilateral& q);
 
-//bool isIntersecting(const Quadrilateral& q);
+bool isIntersecting(const std::vector<double>& points);
 
-bool isIntersecting(Point& p1, Point& p2, Point& q1, Point& q2);
+//bool isIntersecting(Point& p1, Point& p2, Point& q1, Point& q2);
 
 std::pdd lineLineIntersection(std::pdd A, std::pdd B, std::pdd C, std::pdd D);
 
-void displayPoint(std::pdd P);
+//void displayPoint(std::pdd P);
 
 #endif /* functions_hpp */

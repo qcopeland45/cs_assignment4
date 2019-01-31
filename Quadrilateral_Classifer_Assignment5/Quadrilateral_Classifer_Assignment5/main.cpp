@@ -72,6 +72,8 @@ int main(int argc, const char * argv[])
     //kite
     //quad
     
+    
+    //FIGURING OUT WHAT THIS CODE DOES
 //    Quadrilateral q;
 //
 //    q.xCord.push_back(1);
@@ -124,34 +126,6 @@ int main(int argc, const char * argv[])
         SortCordinants(points, quad);
         CalculateLength(quad);
         CalculateSlope(quad);
-        
-        std::pdd A = std::make_pair(0, 0); //the implied 0 0
-        std::pdd B = std::make_pair(quad.xCord[2], quad.yCord[2]);
-        std::pdd C = std::make_pair(quad.xCord[1], quad.yCord[1]);
-        std::pdd D = std::make_pair(quad.xCord[0], quad.yCord[0]);
-        
-        
-        //BRANCHING LOGIC NOT CORRECT i am able to detect if lines intersect however
-//        pdd intersection = lineLineIntersection(A, B, C, D);
-//
-//
-//            if (intersection.first == __FLT_MAX__ && intersection.second==__FLT_MAX__) {
-////                cout << "The given lines AB and CD are parallel.\n";
-//                //do nothing
-//                continue;
-//            }
-//
-//            else if (!intersection.first == -99 && intersection.second == -99){
-//
-////                // NOTE: Further check can be applied in case
-////                // of line segments. Here, we have considered AB
-////                // and CD as lines
-//                cout << "The intersection of the given lines is: ";
-//
-//                displayPoint(intersection);
-//                exit(-1);
-//            }
-
         printCorrectShape(quad);
     }
 
