@@ -1,0 +1,5 @@
+RHOMBUS
+QUADRILATERAL
+TRAEZOID
+PARALELLELOGRAM
+Error 1: must input 6 value points
